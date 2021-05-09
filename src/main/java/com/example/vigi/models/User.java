@@ -40,6 +40,7 @@ public class User {
 
     private Provider provider;
 
+
     public Provider getProvider() {
         return provider;
     }
@@ -51,15 +52,15 @@ public class User {
 
 
 
-    private List<Todo> todo = new ArrayList<>();
+    private List<Todo> todos = new ArrayList<>();
 
     @OneToMany(targetEntity=Todo.class, mappedBy="user",cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Todo> getTodo() {
-        return todo;
+    public List<Todo> getTodos() {
+        return todos;
     }
 
-    public void setTodo(List<Todo> todo) {
-        this.todo = todo;
+    public void setTodos(List<Todo> todos) {
+        this.todos = todos;
     }
 
 
@@ -70,6 +71,15 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+
+
+    public User(String username, String email, String password, List<Todo> todos) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.todos=todos;
     }
 
     public String getId() {

@@ -1,5 +1,9 @@
 package com.example.vigi.payload.request;
 
+import com.example.vigi.models.Todo;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.*;
@@ -19,6 +23,8 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    private List<Todo> todos = new ArrayList<>();
   
     public String getUsername() {
         return username;
@@ -50,5 +56,13 @@ public class SignupRequest {
     
     public void setRole(Set<String> roles) {
       this.roles = roles;
+    }
+
+    public List<Todo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<Todo> todos) {
+        this.todos = todos;
     }
 }

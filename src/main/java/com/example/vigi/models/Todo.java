@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 
 @Document(collection = "todos")
@@ -31,8 +32,10 @@ public class Todo {
 
 
     @ManyToOne
-    @JoinColumn(name = "USER_EMAIL")
+    @JoinColumn(name = "user_email")
     private User user;
+
+
 
     public User getUser() {
         return user;

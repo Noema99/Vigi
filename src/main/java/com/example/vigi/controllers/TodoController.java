@@ -3,6 +3,7 @@ package com.example.vigi.controllers;
 import com.example.vigi.models.Todo;
 import com.example.vigi.payload.request.TodoRequest;
 import com.example.vigi.repository.TodoRepository;
+import com.example.vigi.repository.UserRepository;
 import com.example.vigi.security.services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +21,9 @@ public class TodoController {
 
     @Autowired
     TodoRepository todoRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     private TodoService todoService;
 
@@ -40,14 +44,16 @@ public class TodoController {
 
     @PostMapping("/create")
     public String createTodo(@RequestBody TodoRequest todoRequest) {
-        Todo todoAdded = new Todo(todoRequest.getId(), todoRequest.getTask(), todoRequest.getDate());
+        Todo todoAdded = new Todo(todoRequest.getId(), todoRequest.getTask(), todoRequest.getDate(),todoRequest.isDone(),todoRequest.getUser());
         todoRepository.save(todoAdded);
-        return "todos added : " + todoAdded.getTask();
+        userRepository.save(todoAdded.getUser());
+        return "todos added : " + todoAdded.getTask()+" by "+todoAdded.getUser().getUsername();
     }
 
     @PutMapping("/update")
     public String updateTodo(@RequestBody Todo todoUpdated) {
         todoRepository.save(todoUpdated);
+
         return "todo updated : " + todoUpdated.getTask();
     }
 

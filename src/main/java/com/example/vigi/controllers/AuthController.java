@@ -1,4 +1,5 @@
 package com.example.vigi.controllers;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -6,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.example.vigi.models.Todo;
+import com.example.vigi.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,6 +48,9 @@ public class AuthController {
 	RoleRepository roleRepository;
 
 	@Autowired
+	TodoRepository todoRepository;
+
+	@Autowired
 	PasswordEncoder encoder;
 
 	@Autowired
@@ -67,7 +73,7 @@ public class AuthController {
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
+												 userDetails.getEmail(),
 												 roles));
 	}
 
@@ -88,7 +94,14 @@ public class AuthController {
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), 
 							 signUpRequest.getEmail(),
-							 encoder.encode(signUpRequest.getPassword()));
+							 encoder.encode(signUpRequest.getPassword()),
+								signUpRequest.getTodos());
+
+		// to add his todos in table todo
+		List<Todo> strTodos = signUpRequest.getTodos();
+		List<Todo> todos =  new ArrayList<>(strTodos);
+		for(Todo todo: todos)  {todoRepository.save(todo);}
+
 
 		Set<String> strRoles = signUpRequest.getRoles();
 		Set<Role> roles = new HashSet<>();
